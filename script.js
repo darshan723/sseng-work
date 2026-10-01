@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       message += `📝 *Requirement Details:*\n${description}\n`;
       message += `──────────────────────\n`;
-      message += `_Sent via sseng-work.vercel.app_`;
+      message += `_Sent via sssengineeringworks.com_`;
 
       const whatsappNumber = '919970697776';
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
