@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 4. Request for Quote Form Submission Handler
+  // 4. Request for Quote / Enquiry Form Submission -> Direct WhatsApp Forwarding
   const rfqForm = document.getElementById('rfq-form');
   const formFeedback = document.getElementById('form-feedback');
 
@@ -200,20 +200,66 @@ document.addEventListener('DOMContentLoaded', () => {
     rfqForm.addEventListener('submit', (e) => {
       e.preventDefault();
 
-      const name = document.getElementById('contact-name').value.trim();
-      const company = document.getElementById('contact-company').value.trim();
-      const service = document.getElementById('service-type').value;
+      const name = document.getElementById('contact-name')?.value.trim() || '';
+      const company = document.getElementById('contact-company')?.value.trim() || '';
+      const phone = document.getElementById('contact-phone')?.value.trim() || '';
+      const email = document.getElementById('contact-email')?.value.trim() || '';
+      const serviceSelect = document.getElementById('service-type');
+      const serviceText = serviceSelect && serviceSelect.selectedIndex >= 0 && serviceSelect.value
+        ? serviceSelect.options[serviceSelect.selectedIndex].text
+        : 'General Job Work';
+      const quantity = document.getElementById('component-quantity')?.value.trim() || '';
+      const material = document.getElementById('target-material')?.value.trim() || '';
+      const description = document.getElementById('project-description')?.value.trim() || '';
 
+      // Build structured, easy-to-read WhatsApp message
+      let message = `*NEW ENQUIRY / RFQ*\n`;
+      message += `*Shri Swami Samarth Engineering Work*\n`;
+      message += `──────────────────────\n`;
+      message += `👤 *Client Name:* ${name}\n`;
+      message += `🏢 *Company:* ${company}\n`;
+      message += `📞 *Phone:* ${phone}\n`;
+      message += `✉️ *Email:* ${email}\n`;
+      message += `⚙️ *Service Required:* ${serviceText}\n`;
+      if (quantity) {
+        message += `📦 *Est. Quantity:* ${quantity}\n`;
+      }
+      if (material) {
+        message += `🔩 *Material Spec:* ${material}\n`;
+      }
+      message += `📝 *Requirement Details:*\n${description}\n`;
+      message += `──────────────────────\n`;
+      message += `_Sent via sseng-work.vercel.app_`;
+
+      const whatsappNumber = '919970697776';
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
+      // Display clean, reassuring feedback card
       formFeedback.className = 'form-feedback success';
       formFeedback.style.display = 'block';
-      formFeedback.innerHTML = `<strong>Enquiry Recorded (Wireframe Preview):</strong> Thank you, ${name} from ${company}. Your RFQ for service <em>"${service}"</em> has been captured in layout test mode.`;
+      formFeedback.innerHTML = `
+        <div style="display: flex; align-items: flex-start; gap: 0.75rem; text-align: left;">
+          <span style="font-size: 1.4rem; line-height: 1.2;">💬</span>
+          <div>
+            <strong style="color: #065f46; font-size: 0.95rem;">Enquiry Ready for WhatsApp!</strong>
+            <p style="margin: 0.35rem 0 0.55rem; color: #047857; font-size: 0.88rem; line-height: 1.45;">
+              Thank you, <strong>${name}</strong>. Opening WhatsApp so you can send your requirements directly to <strong>+91 99706 97776</strong>.
+            </p>
+            <a href="${whatsappUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; background: #25D366; color: #ffffff; border-radius: 6px; font-weight: 700; font-size: 0.84rem; text-decoration: none; box-shadow: 0 2px 6px rgba(37, 211, 102, 0.35); transition: opacity 0.2s;">
+              <span>Open WhatsApp Directly</span> &rarr;
+            </a>
+          </div>
+        </div>
+      `;
 
-      rfqForm.reset();
-      if (fileNameDisplay) {
-        fileNameDisplay.textContent = 'No file chosen';
+      // Open WhatsApp in a new tab
+      try {
+        window.open(whatsappUrl, '_blank');
+      } catch (err) {
+        console.error('Popup blocked:', err);
       }
 
-      smoothScrollTo(formFeedback, -100);
+      smoothScrollTo(formFeedback, -120);
     });
   }
 
