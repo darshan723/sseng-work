@@ -2294,6 +2294,45 @@ ul {
 
 .map-card {
   overflow: hidden;
+  padding: 0;
+}
+
+.map-link-wrapper {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.map-link-wrapper:hover .map-overlay-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.map-overlay-btn {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  background: rgba(23, 35, 51, 0.92);
+  color: #F5F2EA;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border-radius: 50px;
+  border: 1px solid rgba(176, 138, 82, 0.5);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .map-placeholder {
